@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc -p tsconfig.build.json",
+    "start": "node .build/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
@@ -31,5 +32,11 @@
       "npm run lint:fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "googleapis": "^101.0.0",
+    "telegraf": "^4.8.5"
   }
 }

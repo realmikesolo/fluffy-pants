@@ -26,7 +26,7 @@ export class PhotoListener {
 
     const response = await axios({ url: url.href, responseType: 'stream' });
 
-    await writeFile(resolve(__dirname, `../data/cat.${fullMimeType}`), response.data);
+    await writeFile(resolve(__dirname, `../../data/cat.${fullMimeType}`), response.data);
 
     await drive.files.create({
       requestBody: {
@@ -36,7 +36,7 @@ export class PhotoListener {
       },
       media: {
         mimeType: `image/${fullMimeType}`,
-        body: fs.createReadStream(resolve(__dirname, `../data/cat.${fullMimeType}`)),
+        body: fs.createReadStream(resolve(__dirname, `../../data/cat.${fullMimeType}`)),
       },
     });
 

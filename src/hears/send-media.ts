@@ -1,28 +1,15 @@
-import { google } from 'googleapis';
 import { Context } from 'telegraf';
+import { drive } from '../google';
 
 function getRandomInt(max: number): number {
   return Math.floor(Math.random() * max);
 }
 
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URL,
-);
-
-oauth2Client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
-
-const drive = google.drive({
-  version: 'v3',
-  auth: oauth2Client,
-});
-
 let cache: any[] = [];
 let cacheExpiresAt = 0;
 
-export class SendPhotoHear {
-  public name = 'Получить фотку';
+export class SendMediaHear {
+  public name = 'Выпечка';
 
   public async execute(ctx: Context): Promise<void> {
     const files =
@@ -41,11 +28,12 @@ export class SendPhotoHear {
         : cache;
 
     const max = files!.length - 1;
+    const file = files[getRandomInt(max)];
 
-    const image = await drive.files
+    const media = await drive.files
       .get(
         {
-          fileId: files[getRandomInt(max)].id!,
+          fileId: file.id!,
           alt: 'media',
         },
         { responseType: 'stream' },
@@ -59,6 +47,10 @@ export class SendPhotoHear {
           }),
       );
 
-    ctx.replyWithPhoto({ source: image });
+    if (file.name.split('.')[1] === 'mp4') {
+      ctx.replyWithVideo({ source: media });
+    } else {
+      ctx.replyWithPhoto({ source: media });
+    }
   }
 }

@@ -1,1 +1,1 @@
-# Telegram bot, which send you random image of your cat
+# Telegram bot, which send you random image or video of your cat
